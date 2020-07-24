@@ -7,7 +7,7 @@ class Game:
 
     def __init__(self, parent):
 
-        self.game_frame = Frame(padx=10, pady=10)
+        self.game_frame = Frame(padx=25, pady=10)
         self.game_frame.grid()
 
         # set up operation variable (string variable)
@@ -18,30 +18,39 @@ class Game:
         self.true_answer = IntVar()
         self.true_answer.set(0)
 
-        question = "? <press next>"
+        question = "Press Start"
 
         self.question_label = Label(self.game_frame, text=question, font="Arial 20")
-        self.question_label.grid(row=0)
+        self.question_label.grid(row=1)
+
+        self.info_label = Label(self.game_frame, text="\n", font="Arial 10 italic")
+        self.info_label.grid(row=2)
 
         self.answer_entry = Entry(self.game_frame,
                                   font="Arial  19 bold", width=13)
-        self.answer_entry.grid(row=1, column=0)
+        self.answer_entry.grid(row=3, column=0)
 
         self.button_frame = Frame(self.game_frame, width=200)
-        self.button_frame.grid(row=2)
+        self.button_frame.grid(row=4)
 
         self.submit_button = Button(self.button_frame, text="Submit",
                                     width=12, height=2, command=self.check_ans)
         self.submit_button.grid(row=0, column=0)
 
-        self.next_button = Button(self.button_frame, text="Next",
-                                  width=12, height=2, command=self.ask_question)
+        self.submit_button.config(state=DISABLED)
+
+        self.next_button = Button(self.button_frame, text="Start",
+                                  width=12, height=2, command=self.ask_question, bg="#abff94")
         self.next_button.grid(row=0, column=1)
 
-    def ask_question(self):
-        # generate question
-        op = "+"
+        self.count_label = Label(self.game_frame, text="Question 0")
+        self.count_label.grid(row=5)
 
+    def ask_question(self):
+        # generates question
+        op = "+"
+        self.next_button.config(state=DISABLED, text="Next", bg="SystemButtonFace")
+        self.info_label.config(text="\n")
         self.submit_button.config(bg="SystemButtonFace")
         self.submit_button.config(state=NORMAL)
 
@@ -63,36 +72,35 @@ class Game:
 
         self.true_answer.set(answer)
 
-        self.next_button.config(state=DISABLED)
-        # set your true_answer variable
-
-        # configure the label so that it is asked
-
     def check_ans(self):
-        # retrieve true answer
+        # checks answer and configures buttons based on whether or not the answer was correct
         try:
             true_answer = self.true_answer.get()
-            print("true answer", true_answer)
             true_answer = int(true_answer)
 
             user_input = self.answer_entry.get()
             user_input = int(user_input)
 
             if user_input == true_answer:
-                print("correct")
-                self.submit_button.config(bg="green")
+                self.info_label.config(text="\nCorrect!", fg="green")
+                self.submit_button.config(bg="#abff94")
                 self.submit_button.config(state=DISABLED)
                 self.next_button.config(state=NORMAL)
+                self.answer_entry.delete(0, 'end')
 
             else:
-                print("wrong")
-                self.submit_button.config(bg="red")
+                self.info_label.config(text="Incorrect!\n"
+                                            "The correct answer was {}".format(true_answer), fg="red")
+                self.submit_button.config(bg="#ff9f94")
                 self.submit_button.config(state=DISABLED)
                 self.next_button.config(state=NORMAL)
+                self.answer_entry.delete(0, 'end')
 
         except ValueError:
-            print("number please")
-            self.submit_button.config(bg="red")
+            self.info_label.config(text="Please enter\n"
+                                   "a number", fg="yellow")
+            self.submit_button.config(bg="#fffd94")
+            self.answer_entry.delete(0, 'end')
 
 
 # main routine
