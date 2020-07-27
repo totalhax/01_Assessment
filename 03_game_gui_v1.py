@@ -16,7 +16,7 @@ class Game:
 
         # difficulty variable (?string)
         self.difficulty = StringVar()
-        self.difficulty.set("hard")
+        self.difficulty.set("easy")
 
         # true_answer variable (integer)
         self.true_answer = IntVar()
@@ -82,11 +82,11 @@ class Game:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
         elif diff == "medium":
-            num1 = random.randint(1, 20)
-            num2 = random.randint(1, 20)
+            num1 = random.randint(1, 25)
+            num2 = random.randint(1, 25)
         else:
-            num1 = random.randint(1, 30)
-            num2 = random.randint(1, 30)
+            num1 = random.randint(1, 40)
+            num2 = random.randint(1, 40)
 
         num3 = num1 * num2
 
@@ -132,9 +132,6 @@ class Game:
                                    "a number", fg="black")
             self.submit_button.config(bg="#fffd94")
             self.answer_entry.delete(0, 'end')
-
-    def close_game(self):
-        self.game_frame.destroy()
 
 
 # main routine
