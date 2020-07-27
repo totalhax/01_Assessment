@@ -10,13 +10,20 @@ class Game:
         self.game_frame = Frame(padx=25, pady=10)
         self.game_frame.grid()
 
-        # set up operation variable (string variable)
+        # operation variable (string variable)
+        self.operation = StringVar()
+        self.operation.set("+")
 
-        # set up difficulty variable (?string)
+        # difficulty variable (?string)
+        self.difficulty = StringVar()
+        self.difficulty.set("hard")
 
         # true_answer variable (integer)
         self.true_answer = IntVar()
         self.true_answer.set(0)
+
+        self.num_questions = IntVar()
+        self.num_questions.set(0)
 
         question = "Press Start"
 
@@ -47,15 +54,39 @@ class Game:
         self.count_label.grid(row=5)
 
     def ask_question(self):
-        # generates question
-        op = "+"
+
+        diff = self.difficulty.get()
+
+        how_many = self.num_questions.get()
+
         self.next_button.config(state=DISABLED, text="Next", bg="SystemButtonFace")
+
+        # if we have 10 questions, end game
+        if how_many == 9:
+            self.next_button.config(text="Finish", bg="#abff94")
+        elif how_many >= 10:
+            self.next_button.config(command=self.close_game())
+
+        how_many += 1
+        self.num_questions.set(how_many)
+        self.count_label.config(text="Question {}".format(how_many))
+
+        # generates question
+        op = self.operation.get()
+
         self.info_label.config(text="\n")
         self.submit_button.config(bg="SystemButtonFace")
         self.submit_button.config(state=NORMAL)
 
-        num1 = random.randint(1, 10)
-        num2 = random.randint(1, 10)
+        if diff == "easy":
+            num1 = random.randint(1, 10)
+            num2 = random.randint(1, 10)
+        elif diff == "medium":
+            num1 = random.randint(1, 20)
+            num2 = random.randint(1, 20)
+        else:
+            num1 = random.randint(1, 30)
+            num2 = random.randint(1, 30)
 
         num3 = num1 * num2
 
@@ -98,9 +129,12 @@ class Game:
 
         except ValueError:
             self.info_label.config(text="Please enter\n"
-                                   "a number", fg="yellow")
+                                   "a number", fg="black")
             self.submit_button.config(bg="#fffd94")
             self.answer_entry.delete(0, 'end')
+
+    def close_game(self):
+        self.game_frame.destroy()
 
 
 # main routine
