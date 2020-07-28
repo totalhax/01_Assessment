@@ -9,7 +9,6 @@ class Start:
 
         # operation variable (string variable)
         self.operation = StringVar()
-        self.operation.set("+")
 
         self.start_frame = Frame(padx=10, pady=10)
         self.start_frame.grid()
@@ -50,19 +49,19 @@ class Start:
         self.game_choice_frame.grid(row=4)
 
         self.add_button = Button(self.game_choice_frame, font=font, text="Addition",
-                                 width=12, height=2, command=lambda: self.to_add("+"))
+                                 width=12, height=2, command=lambda: self.check_start_ans("+", self.var.get()))
         self.add_button.grid(row=0, column=0)
 
         self.sub_button = Button(self.game_choice_frame, font=font, text="Subtraction",
-                                 width=12, height=2, command=lambda: self.to_add("-"))
+                                 width=12, height=2, command=lambda: self.check_start_ans("-", self.var.get()))
         self.sub_button.grid(row=0, column=1)
 
         self.mul_button = Button(self.game_choice_frame, font=font, text="Multiplication",
-                                 width=12, height=2)
+                                 width=12, height=2, command=lambda: self.check_start_ans("*", self.var.get()))
         self.mul_button.grid(row=1, column=0)
 
         self.div_button = Button(self.game_choice_frame, font=font, text="Division",
-                                 width=12, height=2)
+                                 width=12, height=2, command=lambda: self.check_start_ans("/", self.var.get()))
         self.div_button.grid(row=1, column=1)
 
         # stats and quit button are below game_choice_frame
@@ -74,10 +73,30 @@ class Start:
                                   width=12, height=2, command=self.to_quit, bg="Red", fg="White")
         self.quit_button.grid(row=5, column=1, pady=20)
 
-    def to_add(self, operation):
+    def check_start_ans(self, operation, diff):
+        # checks answer and configures buttons based on whether or not the answer was correct
+        try:
+            diff_choice = self.var.get()
+            diff_choice = int(diff_choice)
+
+            num_quest = self.start_amount_entry.get()
+            num_quest = int(num_quest)
+
+            if num_quest == "":
+                self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
+            elif diff_choice == "":
+                self.how_many_questions.config(text="Please select a difficulty", fg="red")
+            else:
+                self.to_add(operation, diff)
+
+        except ValueError:
+            self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
+
+    def to_add(self, operation, diff):
         # self.operation.set("+")
         print(operation)
-        Game(self, operation)
+        print(diff)
+        Game(self, operation, diff)
 
     def to_quit(self):
         root.destroy()
@@ -85,10 +104,8 @@ class Start:
 
 class Game:
 
-    def __init__(self, partner, operation):
+    def __init__(self, partner, operation, diff):
 
-        diff = partner.var.get()
-        print(diff)
         self.game_frame = Frame(padx=25, pady=10)
         self.game_frame.grid()
 
@@ -98,6 +115,12 @@ class Game:
 
         self.num_questions = IntVar()
         self.num_questions.set(0)
+
+        self.var_operation = StringVar()
+        self.var_operation.set(operation)
+
+        self.difficulty = IntVar()
+        self.difficulty.set(diff)
 
         self.game_frame = Toplevel()
 
@@ -130,13 +153,10 @@ class Game:
         self.count_label.grid(row=5)
 
     def ask_question(self):
-
         diff = self.difficulty.get()
-
         how_many = self.num_questions.get()
-
         self.next_button.config(state=DISABLED, text="Next", bg="SystemButtonFace")
-
+        op = self.var_operation.get()
         # if we have 10 questions, end game
         if how_many == 9:
             self.next_button.config(text="Finish", bg="#abff94")
@@ -148,16 +168,15 @@ class Game:
         self.count_label.config(text="Question {}".format(how_many))
 
         # generates question
-        op = self.operation.get()
 
         self.info_label.config(text="\n")
         self.submit_button.config(bg="SystemButtonFace")
         self.submit_button.config(state=NORMAL)
 
-        if diff == "easy":
+        if diff == 1:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
-        elif diff == "medium":
+        elif diff == 2:
             num1 = random.randint(1, 25)
             num2 = random.randint(1, 25)
         else:
