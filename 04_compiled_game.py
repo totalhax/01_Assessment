@@ -28,6 +28,7 @@ class Start:
 
         # radio buttons to choose the difficulty of the questions, the difficulty is the scale of the numbers used
         self.var = IntVar()
+        self.var.set = 0
 
         self.difficulty_frame = Frame(padx=10, pady=10)
         self.difficulty_frame.grid(row=3)
@@ -49,19 +50,23 @@ class Start:
         self.game_choice_frame.grid(row=4)
 
         self.add_button = Button(self.game_choice_frame, font=font, text="Addition",
-                                 width=12, height=2, command=lambda: self.check_start_ans("+", self.var.get()))
+                                 width=12, height=2, command=lambda: self.check_start_ans("+", self.var.get(),
+                                                                                          self.start_amount_entry.get()))
         self.add_button.grid(row=0, column=0)
 
         self.sub_button = Button(self.game_choice_frame, font=font, text="Subtraction",
-                                 width=12, height=2, command=lambda: self.check_start_ans("-", self.var.get()))
+                                 width=12, height=2, command=lambda: self.check_start_ans("-", self.var.get(),
+                                                                                          self.start_amount_entry.get()))
         self.sub_button.grid(row=0, column=1)
 
         self.mul_button = Button(self.game_choice_frame, font=font, text="Multiplication",
-                                 width=12, height=2, command=lambda: self.check_start_ans("*", self.var.get()))
+                                 width=12, height=2, command=lambda: self.check_start_ans("*", self.var.get(),
+                                                                                          self.start_amount_entry.get()))
         self.mul_button.grid(row=1, column=0)
 
         self.div_button = Button(self.game_choice_frame, font=font, text="Division",
-                                 width=12, height=2, command=lambda: self.check_start_ans("/", self.var.get()))
+                                 width=12, height=2, command=lambda: self.check_start_ans("/", self.var.get(),
+                                                                                          self.start_amount_entry.get()))
         self.div_button.grid(row=1, column=1)
 
         # stats and quit button are below game_choice_frame
@@ -73,7 +78,7 @@ class Start:
                                   width=12, height=2, command=self.to_quit, bg="Red", fg="White")
         self.quit_button.grid(row=5, column=1, pady=20)
 
-    def check_start_ans(self, operation, diff):
+    def check_start_ans(self, operation, diff, question_number):
         # checks answer and configures buttons based on whether or not the answer was correct
         try:
             diff_choice = self.var.get()
@@ -84,19 +89,19 @@ class Start:
 
             if num_quest == "":
                 self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
-            elif diff_choice == "":
+            elif diff_choice == 0:
                 self.how_many_questions.config(text="Please select a difficulty", fg="red")
             else:
-                self.to_add(operation, diff)
+                self.to_add(operation, diff, question_number)
 
         except ValueError:
             self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
 
-    def to_add(self, operation, diff):
+    def to_add(self, operation, diff, question_number):
         # self.operation.set("+")
         print(operation)
         print(diff)
-        Game(self, operation, diff)
+        Game(self, operation, diff, question_number)
 
     def to_quit(self):
         root.destroy()
@@ -104,7 +109,7 @@ class Start:
 
 class Game:
 
-    def __init__(self, partner, operation, diff):
+    def __init__(self, partner, operation, diff, question_number):
 
         self.game_frame = Frame(padx=25, pady=10)
         self.game_frame.grid()
@@ -112,6 +117,9 @@ class Game:
         # true_answer variable (integer)
         self.true_answer = IntVar()
         self.true_answer.set(0)
+
+        self.amount_questions = IntVar()
+        self.amount_questions.set(question_number)
 
         self.num_questions = IntVar()
         self.num_questions.set(0)
@@ -154,13 +162,14 @@ class Game:
 
     def ask_question(self):
         diff = self.difficulty.get()
+        quest = self.amount_questions.get()
         how_many = self.num_questions.get()
         self.next_button.config(state=DISABLED, text="Next", bg="SystemButtonFace")
         op = self.var_operation.get()
         # if we have 10 questions, end game
-        if how_many == 9:
+        if how_many == quest-1:
             self.next_button.config(text="Finish", bg="#abff94")
-        elif how_many >= 10:
+        elif how_many >= quest:
             self.next_button.config(command=self.close_game())
 
         how_many += 1
