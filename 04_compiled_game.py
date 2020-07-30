@@ -98,6 +98,10 @@ class Start:
             self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
 
     def to_add(self, operation, diff, question_number):
+        self.add_button.config(state=DISABLED)
+        self.sub_button.config(state=DISABLED)
+        self.mul_button.config(state=DISABLED)
+        self.div_button.config(state=DISABLED)
         # self.operation.set("+")
         print(operation)
         print(diff)
@@ -123,6 +127,8 @@ class Game:
 
         self.num_questions = IntVar()
         self.num_questions.set(0)
+
+        print(question_number)
 
         self.var_operation = StringVar()
         self.var_operation.set(operation)
@@ -154,13 +160,16 @@ class Game:
         self.submit_button.config(state=DISABLED)
 
         self.next_button = Button(self.button_frame, text="Start",
-                                  width=12, height=2, command=self.ask_question, bg="#abff94")
+                                  width=12, height=2, command=partial(self.ask_question, partner), bg="#abff94")
         self.next_button.grid(row=0, column=1)
 
         self.count_label = Label(self.game_frame, text="Question 0")
         self.count_label.grid(row=5)
 
-    def ask_question(self):
+        self.game_frame.protocol('WM_DELETE_WINDOW', partial(self.close_game,
+                                                             partner))
+
+    def ask_question(self, partner):
         diff = self.difficulty.get()
         quest = self.amount_questions.get()
         how_many = self.num_questions.get()
@@ -169,8 +178,7 @@ class Game:
         # if we have 10 questions, end game
         if how_many == quest-1:
             self.next_button.config(text="Finish", bg="#abff94")
-        elif how_many >= quest:
-            self.next_button.config(command=self.close_game())
+            self.next_button.config(command=partial(self.close_game, partner))
 
         how_many += 1
         self.num_questions.set(how_many)
@@ -206,6 +214,14 @@ class Game:
         self.question_label.config(text=question)
 
         self.true_answer.set(answer)
+
+    def close_game(self, partner):
+        # Put help button back to normal...
+        partner.add_button.config(state=NORMAL)
+        partner.mul_button.config(state=NORMAL)
+        partner.sub_button.config(state=NORMAL)
+        partner.div_button.config(state=NORMAL)
+        self.game_frame.destroy()
 
     def check_ans(self):
         # checks answer and configures buttons based on whether or not the answer was correct

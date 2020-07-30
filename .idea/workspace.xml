@@ -76,8 +76,8 @@
       <file leaf-file-name="04_compiled_game.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/04_compiled_game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="169" column="31" selection-start-line="169" selection-start-column="31" selection-end-line="169" selection-end-column="31" />
+            <state relative-caret-position="323">
+              <caret line="232" column="40" selection-start-line="232" selection-start-column="40" selection-end-line="232" selection-end-column="40" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -85,11 +85,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="05_export_help.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/05_export_help.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="07_Game_Export_GUI_v2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../MysteryBox/02_mystery_box/07_Game_Export_GUI_v2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="AA_compiled_game_v2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../MysteryBox/02_mystery_box/AA_compiled_game_v2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="443" column="80" selection-start-line="443" selection-start-column="80" selection-end-line="443" selection-end-column="80" />
+            <state relative-caret-position="296">
+              <caret line="515" column="97" selection-start-line="515" selection-start-column="85" selection-end-line="515" selection-end-column="97" />
               <folding />
             </state>
           </provider>
@@ -112,6 +132,7 @@
       <list>
         <option value="$PROJECT_DIR$/03_game_gui_v1.py" />
         <option value="$PROJECT_DIR$/../../MysteryBox/02_mystery_box/AA_compiled_game_v2.py" />
+        <option value="$PROJECT_DIR$/05_export_help.py" />
         <option value="$PROJECT_DIR$/04_compiled_game.py" />
       </list>
     </option>
@@ -187,7 +208,7 @@
       <recent name="H:\Documents\COM 301\Programming\01_Assessment\01_Assessment" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.04_compiled_game">
+  <component name="RunManager" selected="Python.07_Game_Export_GUI_v2">
     <configuration default="false" name="01_start_gui_v2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -239,23 +260,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="sandbox_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="01_Assessment" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sandbox_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="04_compiled_game" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -269,6 +273,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="01_Assessment" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/04_compiled_game.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="07_Game_Export_GUI_v2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../MysteryBox/02_mystery_box" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="01_Assessment" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../MysteryBox/02_mystery_box/07_Game_Export_GUI_v2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -411,16 +432,16 @@
       <item index="0" class="java.lang.String" itemvalue="Python.01_start_gui_v2" />
       <item index="1" class="java.lang.String" itemvalue="Python.03_game_gui_v1" />
       <item index="2" class="java.lang.String" itemvalue="Python.AA_compiled_game_v2" />
-      <item index="3" class="java.lang.String" itemvalue="Python.sandbox_2" />
-      <item index="4" class="java.lang.String" itemvalue="Python.04_compiled_game" />
+      <item index="3" class="java.lang.String" itemvalue="Python.04_compiled_game" />
+      <item index="4" class="java.lang.String" itemvalue="Python.07_Game_Export_GUI_v2" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.04_compiled_game" />
-        <item index="1" class="java.lang.String" itemvalue="Python.03_game_gui_v1" />
-        <item index="2" class="java.lang.String" itemvalue="Python.AA_compiled_game_v2" />
-        <item index="3" class="java.lang.String" itemvalue="Python.01_start_gui_v2" />
-        <item index="4" class="java.lang.String" itemvalue="Python.sandbox_2" />
+        <item index="0" class="java.lang.String" itemvalue="Python.07_Game_Export_GUI_v2" />
+        <item index="1" class="java.lang.String" itemvalue="Python.04_compiled_game" />
+        <item index="2" class="java.lang.String" itemvalue="Python.03_game_gui_v1" />
+        <item index="3" class="java.lang.String" itemvalue="Python.AA_compiled_game_v2" />
+        <item index="4" class="java.lang.String" itemvalue="Python.01_start_gui_v2" />
       </list>
     </recent_temporary>
   </component>
@@ -696,16 +717,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../MysteryBox/02_mystery_box/AA_compiled_game_v2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="443" column="80" selection-start-line="443" selection-start-column="80" selection-end-line="443" selection-end-column="80" />
+        <state relative-caret-position="296">
+          <caret line="515" column="97" selection-start-line="515" selection-start-column="85" selection-end-line="515" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../MysteryBox/02_mystery_box/07_Game_Export_GUI_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/05_export_help.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/04_compiled_game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="169" column="31" selection-start-line="169" selection-start-column="31" selection-end-line="169" selection-end-column="31" />
+        <state relative-caret-position="323">
+          <caret line="232" column="40" selection-start-line="232" selection-start-column="40" selection-end-line="232" selection-end-column="40" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
