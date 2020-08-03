@@ -6,12 +6,13 @@ import random
 class Start:
 
     def __init__(self, partner):
+        # defining history list used to store game history
         self.history = []
 
         # operation variable (string variable)
         self.operation = StringVar()
 
-        # sets up first
+        # sets up the amount of questions box and label
         self.start_frame = Frame(padx=10, pady=10)
         self.start_frame.grid()
 
@@ -73,7 +74,7 @@ class Start:
 
         # stats and quit button are below game_choice_frame
         self.stats_button = Button(self.game_choice_frame, font=font_bold, text="Help & History",
-                                   width=12, height=2, bg="Blue", fg="White")
+                                   width=12, height=2, bg="Blue", fg="White", command=lambda: self.to_stats(self.history))
         self.stats_button.grid(row=5, column=0, pady=20)
 
         self.quit_button = Button(self.game_choice_frame, font=font_bold, text="Quit",
@@ -83,15 +84,15 @@ class Start:
     def check_start_ans(self, operation, diff, question_number):
         # checks answer and configures buttons based on whether or not the answer was correct
         try:
-            # retrieves difficulty from
+            # retrieves difficulty
             diff_choice = self.var.get()
             diff_choice = int(diff_choice)
 
+            # retrieves the amount of questions
             num_quest = self.start_amount_entry.get()
             num_quest = int(num_quest)
 
-            print(self.history)
-
+            # checking if either difficulty or amount of questions is blank and throwing an error
             if num_quest == "":
                 self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
             elif diff_choice == 0:
@@ -102,16 +103,20 @@ class Start:
         except ValueError:
             self.how_many_questions.config(text="Please choose an amount of questions", fg="red")
 
+    # function to go to the game function and take the difficulty and amount of questions with it
     def to_add(self, operation, diff, question_number):
         self.add_button.config(state=DISABLED)
         self.sub_button.config(state=DISABLED)
         self.mul_button.config(state=DISABLED)
         self.div_button.config(state=DISABLED)
         # self.operation.set("+")
-        print(operation)
-        print(diff)
         Game(self, operation, diff, question_number)
 
+    # function to take history to gamestats class
+    def to_stats(self, history):
+        GameStats(self, history)
+
+    # function to quit program entirely
     def to_quit(self):
         root.destroy()
 
@@ -120,7 +125,8 @@ class Game:
 
     def __init__(self, partner, operation, diff, question_number):
 
-        partner .history = []
+        # lists for history taken from start class using partner and question answer for sending information back
+        partner.history = []
         self.quest_ans = []
 
         self.game_frame = Frame(padx=25, pady=10)
@@ -130,24 +136,28 @@ class Game:
         self.true_answer = IntVar()
         self.true_answer.set(0)
 
+        # amount_questions variable (integer)
         self.amount_questions = IntVar()
         self.amount_questions.set(question_number)
 
+        # num_questions variable (integer)
         self.num_questions = IntVar()
         self.num_questions.set(0)
 
-        print(question_number)
-
+        # var_operation variable (string)
         self.var_operation = StringVar()
         self.var_operation.set(operation)
 
+        # difficulty variable (integer)
         self.difficulty = IntVar()
         self.difficulty.set(diff)
 
         self.game_frame = Toplevel()
 
+        # question starts as "press start" and will be change to show the current question later
         question = "Press Start"
 
+        # game box labels and entry box for answer
         self.question_label = Label(self.game_frame, text=question, font="Arial 20")
         self.question_label.grid(row=1)
 
@@ -158,6 +168,7 @@ class Game:
                                   font="Arial  19 bold", width=13)
         self.answer_entry.grid(row=3, column=0)
 
+        # submit and next button code with a question count at the bottom
         self.button_frame = Frame(self.game_frame, width=200)
         self.button_frame.grid(row=4)
 
@@ -171,23 +182,28 @@ class Game:
                                   width=12, height=2, command=partial(self.ask_question, partner), bg="#abff94")
         self.next_button.grid(row=0, column=1)
 
+        # question number
         self.count_label = Label(self.game_frame, text="Question 0")
         self.count_label.grid(row=5)
 
         self.game_frame.protocol('WM_DELETE_WINDOW', partial(self.close_game,
                                                              partner))
 
+    # function to ask question
     def ask_question(self, partner):
+        # retrieves difficulty, amount_questions and num_questions
         diff = self.difficulty.get()
         quest = self.amount_questions.get()
         how_many = self.num_questions.get()
+        # disables next button
         self.next_button.config(state=DISABLED, text="Next", bg="SystemButtonFace")
         op = self.var_operation.get()
-        # if we have 10 questions, end game
+        # if we have reached end of questions, change button to finish and end game
         if how_many == quest-1:
             self.next_button.config(text="Finish", bg="#abff94")
             self.next_button.config(command=partial(self.close_game, partner))
 
+        # sets question number label and increases it by 1
         how_many += 1
         self.num_questions.set(how_many)
         self.count_label.config(text="Question {}".format(how_many))
@@ -215,23 +231,27 @@ class Game:
         else:
             question = "{} {} {}".format(num1, op, num2)
 
+        # evaluates question and sets the answer to answer
         answer = int(eval(question))
 
         self.question_label.config(text=question)
 
         self.true_answer.set(answer)
 
+        # places question and correct answer to the question into the quest_ans list
         self.quest_ans.append(question)
         self.quest_ans.append(answer)
 
+    # close game box function
     def close_game(self, partner):
-        # Put help button back to normal...
+        # Put buttons back to normal...
         partner.add_button.config(state=NORMAL)
         partner.mul_button.config(state=NORMAL)
         partner.sub_button.config(state=NORMAL)
         partner.div_button.config(state=NORMAL)
         self.game_frame.destroy()
 
+    # check answer function
     def check_ans(self, partner):
         # checks answer and configures buttons based on whether or not the answer was correct
         try:
@@ -245,22 +265,23 @@ class Game:
             partner.history.append(self.quest_ans)
             self.quest_ans = []
 
+            # if answer is correct make button background green and say correct
             if user_input == true_answer:
                 self.info_label.config(text="\nCorrect!", fg="green")
                 self.submit_button.config(bg="#abff94")
-                self.submit_button.config(state=DISABLED)
-                self.next_button.config(state=NORMAL)
-                self.answer_entry.delete(0, 'end')
-
+            # if answer is incorrect make button background red and say incorrect and shows correct answer
             else:
                 self.info_label.config(text="Incorrect!\n"
                                             "The correct answer was {}".format(true_answer), fg="red")
                 self.submit_button.config(bg="#ff9f94")
-                self.submit_button.config(state=DISABLED)
-                self.next_button.config(state=NORMAL)
-                self.answer_entry.delete(0, 'end')
+
+            # Disables submit button, enables next button and clears out entry box
+            self.submit_button.config(state=DISABLED)
+            self.next_button.config(state=NORMAL)
+            self.answer_entry.delete(0, 'end')
 
         except ValueError:
+            # if no answer was given turn button background yellow and says to enter a number
             self.info_label.config(text="Please enter\n"
                                         "a number", fg="black")
             self.submit_button.config(bg="#fffd94")
@@ -271,20 +292,15 @@ class GameStats:
     def __init__(self, partner, history):
 
         all_game_stats = [
-            "{}".format(history[0]),
-            "{}".format(history[1]),
-            "{}".format(history[2])
+            0, 3
         ]
 
-        # disable help button
+        # disables buttons
         partner.stats_button.config(state=DISABLED)
         partner.add_button.config(state=DISABLED)
         partner.sub_button.config(state=DISABLED)
         partner.mul_button.config(state=DISABLED)
         partner.div_button.config(state=DISABLED)
-
-        heading = "Arial 12 bold"
-        content = "Arial 12"
 
         # Sets up child window (ie: help box)
         self.stats_box = Toplevel()
@@ -299,16 +315,20 @@ class GameStats:
         self.stats_frame.grid()
 
         # Set up Help heading (row 0)
-        self.stats_heading_label = Label(self.stats_frame, text="Game Statistics",
+        self.help_heading_label = Label(self.stats_frame, text="Help",
                                          font="arial 19 bold")
-        self.stats_heading_label.grid(row=0)
+        self.help_heading_label.grid(row=0)
 
         # To Export <instructions> (row 1)
         self.export_instructions = Label(self.stats_frame,
-                                         text="Here are your Game Statistics."
-                                              "Please use the Export button to "
-                                              "access the results of each "
-                                              "round that you played", wrap=250,
+                                         text="Select the amount of questions "
+                                              "that you would like from the "
+                                              "menu and choose a difficulty. "
+                                              "Finally select an operation "
+                                              "and the you will be given questions "
+                                              "fitting your choices. "
+                                              "Bellow you are able to export your "
+                                              "history to a text file.", wrap=250,
                                          font="arial 10 italic",
                                          justify=LEFT, fg="green",
                                          padx=10, pady=10)
@@ -318,65 +338,13 @@ class GameStats:
         self.details_frame = Frame(self.stats_frame)
         self.details_frame.grid(row=2)
 
-        # Starting balance (row 2.0)
-
-        self.start_balance_label = Label(self.details_frame,
-                                         text="Starting Balance:", font=heading,
-                                         anchor="e")
-        self.start_balance_label.grid(row=0, column=0, padx=0)
-
-        self.start_balance_value_label = Label(self.details_frame, font=content,
-                                               text="${}".format(history[0]), anchor="w")
-        self.start_balance_value_label.grid(row=0, column=1, padx=0)
-
-        # Current Balance (row 2.2)
-        self.current_balance_label = Label(self.details_frame,
-                                           text="Current Balance:", font=heading,
-                                           anchor="e")
-        self.current_balance_label.grid(row=1, column=0, padx=0)
-
-        self.current_balance_value_label = Label(self.details_frame, font=content,
-                                                 text="${}".format(history[1]), anchor="w")
-        self.current_balance_value_label.grid(row=1, column=1, padx=0)
-
-        if history[1] > history[0]:
-            win_loss = "Amount Won:"
-            amount = history[1] - history[0]
-            win_loss_fg = "green"
-        else:
-            win_loss = "Amount Lost:"
-            amount = history[0] - history[1]
-            win_loss_fg = "#660000"
-
-        # Amount won / lost (row 2.3)
-        self.wind_loss_label = Label(self.details_frame,
-                                     text=win_loss, font=heading,
-                                     anchor="e")
-        self.wind_loss_label.grid(row=2, column=0, padx=0)
-
-        self.wind_loss_value_label = Label(self.details_frame, font=content,
-                                           text="${}".format(amount),
-                                           fg=win_loss_fg, anchor="w")
-        self.wind_loss_value_label.grid(row=2, column=1, padx=0)
-
-        # Rounds Played (row 2.4)
-        self.games_played_label = Label(self.details_frame,
-                                        text="Rounds Played:", font=heading,
-                                        anchor="e")
-        self.games_played_label.grid(row=4, column=0, padx=0)
-
-        self.games_played_value_label = Label(self.details_frame, font=content,
-                                              text=len(game_history),
-                                              anchor="w")
-        self.games_played_value_label.grid(row=4, column=1, padx=0)
-
         # Dismiss Button (row 3)
         self.export_dismiss_frame = Frame(self.stats_frame)
         self.export_dismiss_frame.grid(row=3)
 
         # Export Button
         self.export_button = Button(self.export_dismiss_frame, text="Export...",
-                                    command=lambda: self.export(game_history, all_game_stats))
+                                    command=partial(self.export, history))
         self.export_button.grid(row=0, column=0, padx=5)
 
         # Dismiss Button
@@ -385,18 +353,20 @@ class GameStats:
         self.dismiss_button.grid(row=0, column=1, pady=10)
 
     def close_stats(self, partner):
-        # Put help button back to normal...
+        # Put buttons back to normal...
         partner.stats_button.config(state=NORMAL)
+        partner.add_button.config(state=NORMAL)
+        partner.sub_button.config(state=NORMAL)
+        partner.mul_button.config(state=NORMAL)
+        partner.div_button.config(state=NORMAL)
         self.stats_box.destroy()
 
-    def export(self, game_history, all_game_stats):
-        Export(self, game_history, all_game_stats)
+    def export(self, history):
+        Export(self, history)
 
 
 class Export:
-    def __init__(self, partner, game_history, all_game_stats):
-
-        print(game_history)
+    def __init__(self, partner, history):
 
         # disable export button
         partner.export_button.config(state=DISABLED)
@@ -422,7 +392,7 @@ class Export:
         self.export_text = Label(self.export_frame, text="Enter a filename in the "
                                                          "box below and press the "
                                                          "Save button to save your "
-                                                         "calculation history to a "
+                                                         "game history to a "
                                                          "text file.",
                                  justify=LEFT, width=40, wrap=250)
         self.export_text.grid(row=1)
@@ -432,7 +402,7 @@ class Export:
                                                          "enter below already "
                                                          "exists, its contents "
                                                          "will be replaced with "
-                                                         "your calculation history",
+                                                         "your game history",
                                  justify=LEFT, bg="#ffafaf", fg="maroon",
                                  font="Arial 10 italic", wrap=225, padx=10, pady=10)
         self.export_text.grid(row=2, pady=10)
@@ -454,7 +424,7 @@ class Export:
         self.save_button = Button(self.save_cancel_frame, text="Save",
                                   font="Arial 15 bold", bg="#003366", fg="white",
                                   command=partial(
-                                      lambda: self.save_history(partner, game_history, all_game_stats)))
+                                      lambda: self.save_history(partner, history)))
         self.save_button.grid(row=0, column=0)
 
         self.cancel_button = Button(self.save_cancel_frame, text="Cancel",
@@ -462,15 +432,14 @@ class Export:
                                     command=partial(self.close_export, partner))
         self.cancel_button.grid(row=0, column=1)
 
-    def save_history(self, partner, game_history, game_stats):
+    def save_history(self, partner, game_history):
 
         # Regular expression to check filname is valid
         valid_char = "[A-Za-z0-9_]"
         has_error = "no"
 
         filename = self.filename_entry.get()
-        print(filename)
-
+        # checks filename for errors
         for letter in filename:
             if re.match(valid_char, letter):
                 continue
@@ -482,7 +451,7 @@ class Export:
                 problem = ("(no {}'s allowed)".format(letter))
             has_error = "yes"
             break
-
+        # checks if filename is blank
         if filename == "":
             problem = "can't be blank"
             has_error = "yes"
@@ -502,19 +471,18 @@ class Export:
             # create file to hold data
             f = open(filename, "w+")
 
-            # Heading for Stats
-            f.write("Game Statistics\n\n")
+            # Heading for Game History
+            f.write("Game History\n\n")
 
-            # Game stats
-            for round in game_stats:
-                f.write(round + "\n")
-
-            # Heading for Rounds
-            f.write("\nRound Details\n\n")
-
-            # add new line at end of each item
+            # checks if answer was correct then prints it into text file
             for item in game_history:
-                f.write(item + "\n")
+                if item[1] == item[2]:
+                    result = "correct"
+                else:
+                    result = "incorrect"
+
+                line = "{} = {}, user answer {}, {}".format(item[0], item[1], item[2], result)
+                f.write(line + "\n")
 
             # close file
             f.close()
